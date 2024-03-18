@@ -29,8 +29,13 @@ private:
     int stor = 3;
 protected:
     int a, b, c, A, B, C;
+    bool t = true;
 
-    Treugolnik(string name, int a, int b, int c, int A, int B, int C) {
+    void proverka() {
+        this->t = (this->stor == 3 && this->A + this->B + this->C == 180);
+    };
+public:
+    Treugolnik(string name, int a, int b, int c, int A, int B, int C) :Figura() {
         this->a = a;
         this->b = b;
         this->c = c;
@@ -38,29 +43,14 @@ protected:
         this->B = B;
         this->C = C;
         this->name = name;
+        this->proverka();
     };
 
-    virtual bool isTry() {
-        return true;
-    };
-
-    bool proverka() {
-        return (this->stor == 3 && this->A + this->B + this->C == 180) && this->isTry();
-    };
-public:
-    Treugolnik() :Figura() {
-        this->a = 10;
-        this->b = 20;
-        this->c = 30;
-        this->A = 50;
-        this->B = 60;
-        this->C = 70;
-        this->name = "Треугольник";
-    };
+    Treugolnik() :Treugolnik("Треугольник", 10, 20, 30, 50, 60, 70) {};
 
     string print() override {
         return this->name + ":\n"
-            + (this->proverka() ? "Правильная" : "Неправильная")
+            + (this->t ? "Правильная" : "Неправильная")
             + "\nКоличество сторон: " + to_string(this->stor)
             + "\nCтороны: a=" + to_string(this->a) + " b=" + to_string(this->b) + " c=" + to_string(this->c)
             + "\nУглы: A=" + to_string(this->A) + " B=" + to_string(this->B) + " C=" + to_string(this->C);
@@ -69,30 +59,47 @@ public:
 
 class Prymegoltreug :public Treugolnik {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return this->C = 90;
     };
 public:
-    Prymegoltreug() : Prymegoltreug(10, 20, 30, 50, 60, 90) {};
-    Prymegoltreug(int a, int b, int c, int A, int B, int C) : Treugolnik("Прямоугольный треугольник", a, b, c, A, B, C) {};
+    Prymegoltreug(int a, int b, int c, int A, int B) :Treugolnik("Прямоугольный треугольник", a, b, c, A, B, 90) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Prymegoltreug() :Prymegoltreug(10, 20, 30, 50, 60) {};
 };
 
 class Ravntreug :public Treugolnik {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->c && this->A == this->C);
     };
 public:
-    Ravntreug() :Treugolnik("Равнобедренный треугольник", 10, 20, 10, 50, 60, 50) {};
+    Ravntreug(int a, int b, int A, int B) :Treugolnik("Равнобедренный треугольник", a, b, a, A, B, A) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Ravntreug() :Ravntreug(10, 20, 50, 60) {};
 };
 
 class Ravnstortreug :public Treugolnik {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->b && this->b == this->c && this->A == this->B && this->B == this->C && this->C == 60);
     };
 public:
-    Ravnstortreug() : Treugolnik("Равносторонний треугольник", 30, 30, 30, 60, 60, 60) {};
+    Ravnstortreug(int a) :Treugolnik("Равносторонний треугольник", a, a, a, 60, 60, 60) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Ravnstortreug() :Ravnstortreug(30) {};
 };
 
 class Chetugol :public Figura {
@@ -101,7 +108,13 @@ private:
     int stor = 4;
 protected:
     int a, b, c, d, A, B, C, D;
-    Chetugol(string name, int a, int b, int c, int d, int A, int B, int C, int D) {
+    
+    bool t = true;
+    void proverka() {
+        this->t = (this->stor == 4 && this->A + this->B + this->C + this->D == 360);
+    };
+public:
+    Chetugol(string name, int a, int b, int c, int d, int A, int B, int C, int D) :Figura() {
         this->a = a;
         this->b = b;
         this->c = c;
@@ -111,29 +124,13 @@ protected:
         this->C = C;
         this->D = D;
         this->name = name;
+        this->proverka();
     };
-    virtual bool isTry() {
-        return true;
-    }
-    bool proverka() {
-        return (this->stor == 4 && this->A + this->B + this->C + this->D == 360) && this->isTry();
-    };
-public:
-    Chetugol() :Figura() {
-        this->a = 10;
-        this->b = 20;
-        this->c = 30;
-        this->d = 40;
-        this->A = 50;
-        this->B = 60;
-        this->C = 70;
-        this->D = 80;
-        this->name = "Четырехугольник";
-    };
+    Chetugol() :Chetugol("Четырехугольник", 10, 20, 30, 40, 50, 60, 70, 80) {};
 
     string print() override {
         return this->name + ":\n"
-            + (this->proverka() ? "Правильная" : "Непрвильная")
+            + (this->t ? "Правильная" : "Непрвильная")
             + "\nКоличество сторон: " + to_string(this->stor)
             + "\nCтороны: a=" + to_string(this->a) + " b=" + to_string(this->b) + " c=" + to_string(this->c) + " d=" + to_string(this->d)
             + "\nУглы: A=" + to_string(this->A) + " B=" + to_string(this->B) + " C=" + to_string(this->C) + " D=" + to_string(this->D);
@@ -142,42 +139,66 @@ public:
 
 class Kvadrat :public Chetugol {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->b && this->b == this->c && this->c == this->d &&
             this->A == this->B && this->B == this->C && this->C == this->D && this->D == 90);
     };
 public:
-    Kvadrat() :Chetugol("Квадрат", 20, 20, 20, 20, 90, 90, 90, 90) {};
+    Kvadrat(int a) :Chetugol("Квадрат", a, a, a, a, 90, 90, 90, 90) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Kvadrat() :Kvadrat(20) {};
 };
 
 class Prmugol :public Chetugol {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->c && this->b == this->d &&
             this->A == this->B && this->B == this->C && this->C == this->D && this->D == 90);
     };
 public:
-    Prmugol() :Chetugol("Прямоугольник", 10, 20, 10, 20, 90, 90, 90, 90) {};
+    Prmugol(int a, int b) :Chetugol("Прямоугольник", a, b, a, b, 90, 90, 90, 90) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Prmugol() :Prmugol(10, 20) {};
 };
 
 class Parallel :public Chetugol {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->c && this->b == this->d &&
             this->A == this->C && this->B == this->D);
     };
 public:
-    Parallel() :Chetugol("Параллелограмм", 20, 30, 20, 30, 30, 40, 30, 40) {};
+    Parallel(int a, int b, int A, int B) :Chetugol("Параллелограмм", a, b, a, b, A, B, A, B) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Parallel() :Parallel(20, 30, 30, 40) {};
 };
 
 class Romb :public Chetugol {
 protected:
-    bool isTry() override {
+    bool isTry() {
         return (this->a == this->b && this->b == this->c && this->c == this->d &&
             this->A == this->C && this->B == this->D);
     };
 public:
-    Romb() :Chetugol("Ромб", 30, 30, 30, 30, 30, 40, 30, 40) {};
+    Romb(int a, int A, int B) :Chetugol("Ромб", a, a, a, a, A, B, A, B) {
+        this->proverka();
+        if (this->t) {
+            this->t = isTry();
+        }
+    };
+    Romb() :Romb(30, 30, 40) {};
 };
 
 void print_info(Figura* f) {
@@ -192,7 +213,7 @@ int main() {
     Figura figra;
     Treugolnik tre;
     Prymegoltreug prtre;
-    Prymegoltreug prtreq(10, 20, 30, 50, 40, 90);
+    Prymegoltreug prtreq(10, 20, 30, 50, 40);
     Ravntreug ravn;
     Ravnstortreug storon;
     Chetugol ugol;
