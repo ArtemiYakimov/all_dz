@@ -8,7 +8,7 @@ int function(string str, int forbidden_length) {
     if (q != forbidden_length) {
         return q;
     }
-    throw "bad_length";
+    throw "Вы ввели слово запретной длины! До свидания";
 };
 
 int main() {
@@ -32,7 +32,7 @@ int main() {
         } while (flag);
     }
     catch (const char* error) {
-        cout << "Вы ввели слово запретной длины! До свидания" << endl;
+        cout << error << endl;
     }
     catch (...) {
         cout << "Неизвестная ошибка" << endl;
