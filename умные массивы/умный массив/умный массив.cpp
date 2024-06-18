@@ -1,67 +1,67 @@
 ﻿#include <Windows.h>
 #include <iostream>
+#include <stdexcept>
 
-using namespace std;
-
-class smart_array {
+class SmartArray {
 private:
-	int* arr;
-	int position = 0;
-	int size = 0;
-public:
-	smart_array(int size) {
-		this->size = size;
-		this->arr = new int[size]();
-	};
-	~smart_array() {
-		delete[] this->arr;
-		this->position = 0;
-		this->size = 0;
-	};
-	void add_element(int number) {
-		if (this->position == this->size) {
-			int* new_arr = new int[this->size + (this->size / 2)];
-			for (int i = 0; i < this->size; i++) {
-				new_arr[i] = this->arr[i];
-			}
-			delete[] this->arr;
-			this->arr = new_arr;
-			this->size += 1;
-		}
-		this->arr[this->position] = number;
-		this->position += 1;
-	};
-	int get_element(int index) {
-		if (index < this->position) {
-			return this->arr[index];
-		}
+    int* arr;
+    int position;
+    int size;
 
-		throw length_error("Попытка обратиться к несуществующему элементу в массиве ...");
-	};
+public:
+    SmartArray(int initialSize) : position(0), size(initialSize) {
+        arr = new int[size]();
+    }
+
+    ~SmartArray() {
+        delete[] arr;
+    }
+
+    void addElement(int number) {
+        if (position == size) {
+            int newSize = size + (size / 2);
+            int* newArr = new int[newSize];
+            for (int i = 0; i < size; i++) {
+                newArr[i] = arr[i];
+            }
+            delete[] arr;
+            arr = newArr;
+            size = newSize;
+        }
+        arr[position] = number;
+        position++;
+    }
+
+    int getElement(int index) {
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Index out of range");
+        }
+        return arr[index];
+    }
 };
 
 int main() {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
-	try {
-		smart_array arr(5);
-		arr.add_element(1);
-		arr.add_element(4);
-		arr.add_element(155);
-		arr.add_element(14);
-		arr.add_element(15);
+    try {
+        SmartArray arr(5);
+        arr.addElement(1);
+        arr.addElement(4);
+        arr.addElement(155);
+        arr.addElement(14);
+        arr.addElement(15);
 
-		arr.add_element(21);
-		arr.add_element(10);
-		arr.add_element(132);
+        arr.addElement(21);
+        arr.addElement(10);
+        arr.addElement(132);
 
-		cout << arr.get_element(7) << endl;
-		cout << arr.get_element(17) << endl;
-	}
-	catch (const exception& ex) {
-		cout << ex.what() << endl;
-	}
+        std::cout << arr.getElement(7) << std::endl;
+        std::cout << arr.getElement(17) << std::endl;
+    }
+    catch (const std::exception& ex) {
+        std::cout << ex.what() << std::endl;
+    }
 
-	return 0;
+    return 0;
 }
