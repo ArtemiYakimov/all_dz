@@ -12,6 +12,10 @@ public:
     SmartArray(int initialSize) : position(0), size(initialSize) {
         arr = new int[size]();
     }
+    SmartArray(const SmartArray&) = delete;
+
+
+    SmartArray& operator= (const SmartArray&) = delete;
 
     ~SmartArray() {
         delete[] arr;
@@ -19,7 +23,9 @@ public:
 
     void addElement(int number) {
         if (position == size) {
-            int newSize = size + (size / 2);
+
+            int half = size / 2;
+            int newSize = size + (half > 1 ? half : 2);
             int* newArr = new int[newSize];
             for (int i = 0; i < size; i++) {
                 newArr[i] = arr[i];
@@ -45,9 +51,11 @@ int main() {
     SetConsoleOutputCP(1251);
 
     try {
-        SmartArray arr(5);
+        SmartArray arr(1);
+
         arr.addElement(1);
         arr.addElement(4);
+
         arr.addElement(155);
         arr.addElement(14);
         arr.addElement(15);
@@ -57,7 +65,7 @@ int main() {
         arr.addElement(132);
 
         std::cout << arr.getElement(7) << std::endl;
-        std::cout << arr.getElement(17) << std::endl;
+        //std::cout << arr.getElement(17) << std::endl;
     }
     catch (const std::exception& ex) {
         std::cout << ex.what() << std::endl;

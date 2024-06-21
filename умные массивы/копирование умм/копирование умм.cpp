@@ -14,6 +14,12 @@ public:
     smart_array(int size) : position(0), size(size) {
         arr = new int[size]();
     }
+    smart_array(const smart_array& other_array) : position(other_array.position), size(other_array.size) {
+        arr = new int[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = other_array.arr[i];
+        }
+    };
 
     ~smart_array() {
         delete[] arr;
@@ -42,20 +48,23 @@ public:
 
     void add_element(int number) {
         if (position == size) {
-            int* new_arr = new int[size + (size / 2)];
+            int half = (size + 1) / 2;
+            int newSize = size + half;
+            int* new_arr = new int[newSize];
+
             for (int i = 0; i < size; i++) {
                 new_arr[i] = arr[i];
             }
             delete[] arr;
             arr = new_arr;
-            size += 1;
+            size = newSize;
         }
         arr[position] = number;
         position += 1;
     }
 
     int get_element(int index) const {
-        if (index < position) {
+        if (index >= 0 && index < position) {
             return arr[index];
         }
         throw out_of_range("Index out of bounds");
