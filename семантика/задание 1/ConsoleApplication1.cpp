@@ -1,12 +1,12 @@
-﻿#include <iostream>
-#include <Windows.h>
+﻿#include <Windows.h>
 #include <vector>
 #include <string>
+#include <iostream>
 
 // Шаблонная функция для перемещения содержимого одного вектор в другой
 template <typename T>
-void переместитьВекторы(std::vector<T>& src, std::vector<T>& dst) {
-    dst = std::move(src);
+void t2(std::vector<T>& src, std::vector<T>& dst) {
+    std::swap(dst, src);
 }
 
 int main() {
@@ -27,7 +27,7 @@ int main() {
     }
 
     // Перемещаем содержимое вектора один в вектор два
-    переместитьВекторы(один, два);
+    t2(один, два);
 
     // Выводим содержимое векторов после перемещения
     std::cout << "Содержимое вектора один после перемещения:" << std::endl;

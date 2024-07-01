@@ -1,6 +1,6 @@
-﻿#include <iostream>
-#include <string>
+﻿#include <string>
 #include <algorithm>
+#include <iostream>
 
 class big_integer {
 private:
@@ -8,6 +8,7 @@ private:
 
 public:
     big_integer() : value("") {} // default constructor
+
     big_integer(const std::string& str) : value(str) {
         while (!value.empty() && value[0] == '0') {
             value.erase(0, 1);
@@ -44,16 +45,17 @@ private:
     static std::string add(const std::string& a, const std::string& b) {
         std::string result;
         int carry = 0;
-        size_t i = a.size() - 1; // changed to size_t
-        size_t j = b.size() - 1; // changed to size_t
 
-        while (i >= 0 || j >= 0 || carry) {
+        size_t i = a.size();
+        size_t j = b.size();
+
+        while (i > 0 || j > 0 || carry) {
             int sum = carry;
-            if (i >= 0) {
-                sum += a[i--] - '0';
+            if (i > 0) {
+                sum += a[--i] - '0';
             }
-            if (j >= 0) {
-                sum += b[j--] - '0';
+            if (j > 0) {
+                sum += b[--j] - '0';
             }
             carry = sum / 10;
             result.push_back('0' + sum % 10);
