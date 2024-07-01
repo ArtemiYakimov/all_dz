@@ -2,7 +2,7 @@
 #include <set>
 #include <vector>
 
-std::vector<int> удалитьДубликаты(std::vector<int> vec) {
+std::vector<int> deletecopy(std::vector<int> vec) {
     std::set<int> set(vec.begin(), vec.end()); // создать множество из вектора
     vec.assign(set.begin(), set.end()); // присвоить множество обратно вектор
     return vec;
@@ -10,7 +10,7 @@ std::vector<int> удалитьДубликаты(std::vector<int> vec) {
 
 int main() {
     std::vector<int> vec = { 1, 1, 2, 5, 6, 1, 2, 4 };
-    vec = удалитьДубликаты(vec);
+    vec = deletecopy(vec);
     for (int i : vec) {
         std::cout << i << " ";
     }
