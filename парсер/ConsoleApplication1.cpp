@@ -36,7 +36,7 @@ private:
         std::string currentSection;
         std::string line;
         while (std::getline(file, line)) {
-            if (line.empty() || line[0] == ';') {
+            if (line.empty() || line[0] == ';' || line[0] == '#') {
                 continue;
             }
             else if (line[0] == '[' && line[line.length() - 1] == ']') {
@@ -66,7 +66,10 @@ private:
 
 int main() {
     try {
-        IniParser parser("example.ini");
+        std::string filename;
+        std::cout << "Enter the name of the INI file: ";
+        std::cin >> filename;
+        IniParser parser(filename);
         int intValue = parser.getValue<int>("Section1", "var1");
         std::string stringValue = parser.getValue<std::string>("Section2", "var2");
         std::cout << "int value: " << intValue << std::endl;
