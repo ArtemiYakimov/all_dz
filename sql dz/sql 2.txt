@@ -1,0 +1,80 @@
+
+-- create
+CREATE TABLE GENRE (
+  id INT PRIMARY KEY,
+  genre TEXT NOT NULL
+);
+
+-- insert
+INSERT INTO GENRE (id, genre) VALUES
+    (1, 'Рок'),
+    (2, 'Рэп'),
+    (3, 'Поп'),
+    (4, 'Хип-хоп');
+
+-- fetch 
+SELECT * FROM GENRE;
+
+CREATE TABLE EXECUTOR (
+    id INT PRIMARY KEY,
+    executor TEXT NOT NULL,
+    lookup_genre INT[]
+);
+
+INSERT INTO EXECUTOR (id, executor, lookup_genre) VALUES
+    (1, 'Queen', ARRAY[1]::INT[]),
+    (2, 'Scorpions', ARRAY[1]::INT[]),
+    (3, 'Лжедитрий IV', ARRAY[2, 4]::INT[]),
+    (4, 'DEEP-EX-SENSE', ARRAY[2, 4]::INT[]),
+    (5, 'Пицца', ARRAY[3]::INT[]),
+    (6, 'Руки Вверх', ARRAY[3]::INT[]);
+    
+SELECT * FROM EXECUTOR;
+
+CREATE TABLE ALBUM (
+    id INT PRIMARY KEY,
+    lookup_executor INT[],
+    album TEXT NOT NULL,
+    year INT
+);
+
+INSERT INTO ALBUM (id, lookup_executor, album, year) VALUES
+    (1, ARRAY[1]::INT[], 'Made in Heaven', 1995),
+    (2, ARRAY[2]::INT[], 'Blackout', 1982),
+    (3, ARRAY[3]::INT[], 'Некрооазис', 2021),
+    (4, ARRAY[4]::INT[], 'Мёртвый шёлк', 2021),
+    (5, ARRAY[5]::INT[], 'Сахар', 2022),
+    (6, ARRAY[6]::INT[], 'Территория Нежность', 2004),
+    (7, ARRAY[3, 4]::INT[], 'Синергис', 2024);
+    
+SELECT * FROM ALBUM;
+    
+CREATE TABLE SONG (
+    id INT PRIMARY KEY,
+    lookup_album INT[],
+    song TEXT NOT NULL,
+    duration TEXT
+);
+
+INSERT INTO SONG (id, lookup_album, song, duration) VALUES
+    (1, ARRAY[1]::INT[], 'Made in Heaven', '4:47'),
+    (2, ARRAY[2]::INT[], 'Blackout', '3:48'),
+    (3, ARRAY[3]::INT[], 'Око великого эля', '6:25'),
+    (4, ARRAY[4]::INT[], 'Кокон', '5:19'),
+    (5, ARRAY[5]::INT[], 'Люблю', '3:55'),
+    (6, ARRAY[6]::INT[], 'Одиннадцать минут', '3:38');
+    
+SELECT * FROM SONG;
+
+CREATE TABLE COLLECTION (
+    id INT PRIMARY KEY,
+    collection TEXT NOT NULL,
+    year INT,
+    lookup_song INT[]
+);
+
+INSERT INTO COLLECTION (id, lookup_song, collection, year) VALUES
+    (1, ARRAY[3, 4, 5]::INT[], 'Лучшие песни', 2024),
+    (2, ARRAY[1, 2, 6]::INT[], 'Песни прошлого', 2022);
+    
+SELECT * FROM COLLECTION;
