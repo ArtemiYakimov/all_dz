@@ -1,80 +1,153 @@
 
 -- create
 CREATE TABLE GENRE (
-  id INT PRIMARY KEY,
+  idGenre SERIAL PRIMARY KEY,
   genre TEXT NOT NULL
 );
 
--- insert
-INSERT INTO GENRE (id, genre) VALUES
-    (1, 'Рок'),
-    (2, 'Рэп'),
-    (3, 'Поп'),
-    (4, 'Хип-хоп');
+INSERT INTO GENRE (genre) VALUES
+    ('Рок'),
+    ('Рэп'),
+    ('Поп'),
+    ('Хип-хоп');
 
 -- fetch 
 SELECT * FROM GENRE;
 
 CREATE TABLE EXECUTOR (
-    id INT PRIMARY KEY,
-    executor TEXT NOT NULL,
-    lookup_genre INT[]
+    idExecutor SERIAL PRIMARY KEY,
+    executor TEXT NOT NULL
 );
-
-INSERT INTO EXECUTOR (id, executor, lookup_genre) VALUES
-    (1, 'Queen', ARRAY[1]::INT[]),
-    (2, 'Scorpions', ARRAY[1]::INT[]),
-    (3, 'Лжедитрий IV', ARRAY[2, 4]::INT[]),
-    (4, 'DEEP-EX-SENSE', ARRAY[2, 4]::INT[]),
-    (5, 'Пицца', ARRAY[3]::INT[]),
-    (6, 'Руки Вверх', ARRAY[3]::INT[]);
+INSERT INTO EXECUTOR (executor) VALUES
+    ('Queen'),
+    ('Scorpions'),
+    ('Лжедитрий IV'),
+    ('DEEP-EX-SENSE'),
+    ('Пицца'),
+    ('Руки Вверх');
     
 SELECT * FROM EXECUTOR;
 
+CREATE TABLE GenreExecutor (
+    idGenre INT REFERENCES GENRE,
+    idExecutor INT REFERENCES EXECUTOR,
+    PRIMARY KEY (idGenre, idExecutor)
+);
+
+INSERT INTO GenreExecutor (idGenre, idExecutor) VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (4, 3),
+    (4, 4),
+    (3, 5),
+    (3, 6);
+    
+SELECT * FROM GenreExecutor;
+
 CREATE TABLE ALBUM (
-    id INT PRIMARY KEY,
-    lookup_executor INT[],
+    idAlbum SERIAL PRIMARY KEY,
     album TEXT NOT NULL,
     year INT
 );
 
-INSERT INTO ALBUM (id, lookup_executor, album, year) VALUES
-    (1, ARRAY[1]::INT[], 'Made in Heaven', 1995),
-    (2, ARRAY[2]::INT[], 'Blackout', 1982),
-    (3, ARRAY[3]::INT[], 'Некрооазис', 2021),
-    (4, ARRAY[4]::INT[], 'Мёртвый шёлк', 2021),
-    (5, ARRAY[5]::INT[], 'Сахар', 2022),
-    (6, ARRAY[6]::INT[], 'Территория Нежность', 2004),
-    (7, ARRAY[3, 4]::INT[], 'Синергис', 2024);
+INSERT INTO ALBUM (album, year) VALUES
+    ('Made in Heaven', 1995),
+    ('Blackout', 1982),
+    ('Некрооазис', 2020),
+    ('Мёртвый шёлк', 2019),
+    ('Сахар', 2022),
+    ('Территория Нежность', 2004),
+    ('Синергис', 2024);
     
 SELECT * FROM ALBUM;
     
 CREATE TABLE SONG (
-    id INT PRIMARY KEY,
-    lookup_album INT[],
+    idSong SERIAL PRIMARY KEY,
     song TEXT NOT NULL,
-    duration TEXT
+    duration INT
 );
 
-INSERT INTO SONG (id, lookup_album, song, duration) VALUES
-    (1, ARRAY[1]::INT[], 'Made in Heaven', '4:47'),
-    (2, ARRAY[2]::INT[], 'Blackout', '3:48'),
-    (3, ARRAY[3]::INT[], 'Око великого эля', '6:25'),
-    (4, ARRAY[4]::INT[], 'Кокон', '5:19'),
-    (5, ARRAY[5]::INT[], 'Люблю', '3:55'),
-    (6, ARRAY[6]::INT[], 'Одиннадцать минут', '3:38');
+INSERT INTO SONG (song, duration) VALUES
+    ('Made in Heaven', 287),
+    ('My City My Town', 228),
+    ('Око великого эля', 385),
+    ('Кокон', 319),
+    ('Люблю', 235),
+    ('Одиннадцать минут', 218),
+    ('Первоначало', 220),
+    ('Кайлеон', 256);
     
 SELECT * FROM SONG;
 
-CREATE TABLE COLLECTION (
-    id INT PRIMARY KEY,
-    collection TEXT NOT NULL,
-    year INT,
-    lookup_song INT[]
+CREATE TABLE AlbumSong (
+    idAlbum INT REFERENCES ALBUM,
+    idSong INT REFERENCES SONG,
+    PRIMARY KEY (idAlbum, idSong)
 );
 
-INSERT INTO COLLECTION (id, lookup_song, collection, year) VALUES
-    (1, ARRAY[3, 4, 5]::INT[], 'Лучшие песни', 2024),
-    (2, ARRAY[1, 2, 6]::INT[], 'Песни прошлого', 2022);
+INSERT INTO AlbumSong (idAlbum, idSong) VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (7, 8);
+    
+SELECT * FROM AlbumSong;
+
+CREATE TABLE ExecutorSong (
+    idExecutor INT REFERENCES EXECUTOR,
+    idSong INT REFERENCES SONG,
+    PRIMARY KEY (idExecutor, idSong)
+);
+
+INSERT INTO ExecutorSong (idExecutor, idSong) VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (3, 7),
+    (4, 7),
+    (3, 8),
+    (4, 8);
+SELECT * FROM ExecutorSong;
+
+CREATE TABLE COLLECTION (
+    idCollection SERIAL PRIMARY KEY,
+    collection TEXT NOT NULL,
+    year INT
+);
+
+INSERT INTO COLLECTION (collection, year) VALUES
+    ('Лучшие песни', 2024),
+    ('Песни прошлого', 2022),
+    ('Сборник рока', 2018),
+    ('Сборник рэпа', 2021);
     
 SELECT * FROM COLLECTION;
+
+CREATE TABLE CollectionSong (
+    idCollection INT REFERENCES ALBUM,
+    idSong INT REFERENCES SONG,
+    PRIMARY KEY (idCollection, idSong)
+);
+
+INSERT INTO CollectionSong (idCollection, idSong) VALUES
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (2, 1),
+    (2, 2),
+    (2, 6),
+    (3, 1),
+    (3, 2),
+    (4, 3),
+    (4, 4),
+    (4, 7);
+SELECT * FROM CollectionSong;
