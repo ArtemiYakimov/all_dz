@@ -107,16 +107,28 @@ public:
 };
 
 int main() {
-    ClientManager clientManager;
-    clientManager.createDatabaseStructure();
+    try {
+        ClientManager clientManager;
+        clientManager.createDatabaseStructure();
 
-    // Пример использования методов
-    clientManager.addClient("John", "Doe", "john.doe@example.com");
-    clientManager.addPhoneForClient(1, "123456789");
-    clientManager.updateClientData(1, "John", "Smith", "john.smith@example.com");
-    clientManager.removePhoneForClient(1, "123456789");
-    clientManager.removeClient(1);
-    clientManager.findClient("John");
+        // Пример использования методов
+        clientManager.addClient("John", "Doe", "john.doe@example.com");
+        clientManager.addPhoneForClient(1, "123456789");
+        clientManager.updateClientData(1, "John", "Smith", "john.smith@example.com");
+        clientManager.removePhoneForClient(1, "123456789");
+        clientManager.removeClient(1);
+        clientManager.findClient("John");
+    }
+    catch (const pqxx::sql_error& e) {
+        std::cerr << "SQL Error: " << e.what() << std::endl;
+        std::cerr << "Query: " << e.query() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    catch (...) {
+        std::cerr << "Unknown error occurred." << std::endl;
+    }
 
     return 0;
 }
