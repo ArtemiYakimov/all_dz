@@ -21,7 +21,6 @@ public:
     int getValue() const {
         return value;
     }
-
 private:
     int value;
     std::mutex mutex;
