@@ -1,47 +1,43 @@
 ﻿#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <thread>
 #include <future>
+#include <numeric>
 
-// Функция для поиска минимального элемента в векторе
-std::future<int> findMinElement(const std::vector<int>& vec, int start, int end) {
-    return std::async(std::launch::async, [&vec, start, end]() {
-        int minIdx = start;
-        for (int i = start + 1; i <= end; ++i) {
-            if (vec[i] < vec[minIdx]) {
-                minIdx = i;
-            }
-        }
-        return minIdx;
-        });
-}
-
-// Функция для сортировки вектора выбором
-std::vector<int> selectionSort(std::vector<int> vec) {
-    for (int i = 0; i < vec.size() - 1; ++i) {
-        std::future<int> minIdxFuture = findMinElement(vec, i, vec.size() - 1);
-        int minIdx = minIdxFuture.get();
-
-        // Меняем местами минимальный элемент и элемент на i-м месте
-        std::swap(vec[i], vec[minIdx]);
+template <typename InputIterator, typename Function>
+void parallel_for_each(InputIterator first, InputIterator last, Function&& f, size_t min_chunk_size = 1) {
+    const size_t length = std::distance(first, last);
+    if (length <= min_chunk_size) {
+        std::for_each(first, last, std::forward<Function>(f));
+        return;
     }
-    return vec;
+
+    const size_t num_threads = std::thread::hardware_concurrency();
+    const size_t chunk_size = (length + num_threads - 1) / num_threads;
+
+    std::vector<std::future<void>> futures;
+
+    for (size_t i = 0; i < num_threads; ++i) {
+        InputIterator start = first + i * chunk_size;
+        InputIterator end = (i == num_threads - 1) ? last : first + (i + 1) * chunk_size;
+        futures.emplace_back(std::async(std::launch::async, [start, end, f = std::forward<Function>(f)]() {
+            std::for_each(start, end, f);
+            }));
+    }
+
+    for (auto& future : futures) {
+        future.get();
+    }
 }
 
 int main() {
-    std::vector<int> unsortedVector = { 5, 2, 8, 1, 9, 3 };
-    std::vector<int> sortedVector = selectionSort(unsortedVector);
+    std::vector<int> v(100);
+    std::iota(v.begin(), v.end(), 0);
 
-    std::cout << "Unsorted vector: ";
-    for (int num : unsortedVector) {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Sorted vector: ";
-    for (int num : sortedVector) {
-        std::cout << num << " ";
-    }
+    parallel_for_each(v.begin(), v.end(), [](int x) {
+        std::cout << x << " ";
+        });
     std::cout << std::endl;
 
     return 0;
