@@ -18,7 +18,9 @@ void calculateInThread(int threadId) {
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
 
         mtx.lock(); // блокируем мьютекс для доступа к консоли
-        std::cout << "\r| " << std::setw(2) << threadId << " | " << std::this_thread::get_id() << " | ";
+        // Установка курсора в нужную позицию
+        std::cout << "\033[" << threadId << ";0H"; // Перемещение курсора на строку threadId, колонку 0
+        std::cout << "| " << std::setw(2) << threadId << " | " << std::this_thread::get_id() << " | ";
         for (int j = 0; j < i; j++) {
             std::cout << "#";
         }
@@ -29,13 +31,13 @@ void calculateInThread(int threadId) {
         std::cout.flush();
         mtx.unlock(); // разблокируем мьютекс
     }
-
-    std::cout << std::endl;
 }
 
 int main() {
     std::vector<std::thread> threads;
 
+    // Очистка консоли и установка курсора в начало
+    std::cout << "\033[2J\033[1;1H";
     std::cout << "+--------------+---------------------+--------------------+-------------+" << std::endl;
     std::cout << "| Thread ID    | Thread Identifier  | Calculation Status | Time Taken  |" << std::endl;
     std::cout << "+--------------+---------------------+--------------------+-------------+" << std::endl;
