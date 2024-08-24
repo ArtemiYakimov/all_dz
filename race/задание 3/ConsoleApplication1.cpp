@@ -19,10 +19,12 @@ public:
     }
 
     void swapWithScopedLock(Data& other) {
-        std::lock_guard<std::mutex> lock1(mutex);
-        std::lock_guard<std::mutex> lock2(other.mutex);
+        std::unique_lock<std::mutex> lock1(mutex, std::defer_lock);
+        std::unique_lock<std::mutex> lock2(other.mutex, std::defer_lock);
+        std::lock(lock1, lock2);
         std::swap(value, other.value);
     }
+
 
     int getValue() const {
         return value;
