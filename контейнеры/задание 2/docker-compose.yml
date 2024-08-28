@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  fraction-app-gcc:
+    build: .
+    environment:
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1
+    volumes:
+      - .:/app
+    command: ./fraction-app-gcc
+
+  fraction-app:
+    build: .
+    environment:
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1
+    volumes:
+      - .:/app
+    command: ./fraction-app-clang
