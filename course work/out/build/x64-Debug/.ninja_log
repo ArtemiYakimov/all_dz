@@ -1,0 +1,14 @@
+# ninja log v5
+15	266	7476542942181824	CMakeFiles/my_lib.dir/boots.cpp.obj	fc970918937b210e
+34	267	7476542942201837	CMakeFiles/my_lib.dir/camel_is_fast.cpp.obj	4740d8319efa5b4e
+28	270	7476542942221832	CMakeFiles/my_lib.dir/centaur.cpp.obj	607d0bdb0264769f
+21	277	7476542942291830	CMakeFiles/my_lib.dir/camel.cpp.obj	1e7d2d32c256c4d4
+40	283	7476542942361820	CMakeFiles/my_lib.dir/broomstick.cpp.obj	58a5abee73bf5ff8
+47	285	7476542942391807	CMakeFiles/my_lib.dir/magic_carpet.cpp.obj	c8f5931d2488ac2e
+53	294	7476542942471815	CMakeFiles/my_lib.dir/eagle.cpp.obj	78446d6fbc4e5bad
+9	297	7476542942521802	CMakeFiles/my_lib.dir/earthair.cpp.obj	8b5f89fe538b01ae
+3	299	7476542942531812	CMakeFiles/my_lib.dir/race.cpp.obj	d241b03d9b8f2f45
+299	645	7476542945861791	my_lib.dll	98cb8a2478a6d0ae
+299	645	7476542945861791	my_lib.lib	98cb8a2478a6d0ae
+4	562	7476543157497034	CMakeFiles/racing_exe.dir/main.cpp.obj	fad23fdade4dc90a
+562	889	7476543160659302	racing_exe.exe	1c892f899670608
