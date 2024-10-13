@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.22.0)
+
+project(MyConsoleApp)
+
+# Найти необходимые модули Qt
+find_package(Qt5 REQUIRED COMPONENTS Core Sql Network)
+
+# Добавить исполняемый файл
+add_executable(MyConsoleApp main.cpp)
+
+# Линковка с модулями Qt
+target_link_libraries(MyConsoleApp Qt5::Core Qt5::Sql Qt5::Network)
